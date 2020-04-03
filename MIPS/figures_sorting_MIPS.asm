@@ -257,14 +257,12 @@ check_loop:
 
 black_pixel_found_in_main_loop:
       #one of figures is saved to squares, so we have to move square pointer
-      print_str("found black block")
       addi square_curr,square_curr,12
 
 black_pixel_found:
       addiu $sp,$sp,-4 #move stack pointer
       sw $ra,0($sp) #save return address
 
-      print_str_rej("\nFound black pixel for iter:",input_iter)
       ###function body:
       #paint this pixel white because of recursion
       li tmp,0xffffffff
@@ -341,7 +339,6 @@ check_max_y:
 checking_neighbours:
 
 check_left:
-print_str("cL")
       #check if is current pixel left one
       divu input_iter,width
       mfhi tmp
@@ -353,7 +350,6 @@ print_str("cL")
       beq tmp,tmp2,check_right
 
       #calling recursively
-      print_str("jump left")
       addiu $sp,$sp,-4 #move stack pointer
       sw input_iter,0($sp) #save input_iter
       addiu input_iter,input_iter,-4
@@ -369,7 +365,6 @@ print_str("cL")
 
 
 check_right:
-print_str("cR")
       #check if is current pixel right one
       divu input_iter,width
       mfhi tmp
@@ -382,7 +377,6 @@ print_str("cR")
       beq tmp,tmp2,check_top
 
       #calling recursively
-      print_str("jump right")
       addiu $sp,$sp,-4 #move stack pointer
       sw input_iter,0($sp) #save input_iter
       addiu input_iter,input_iter,4
@@ -395,11 +389,7 @@ print_str("cR")
       addiu $sp,$sp,4
       lw input_iter,($sp)
       addiu $sp,$sp,4
-check_top:
-print_str("cT")
-      
-      
-      
+check_top:  
       #check if is current pixel top one
       divu input_iter,width
       mflo tmp #y
@@ -412,7 +402,6 @@ print_str("cT")
       beq tmp,tmp2,check_bottom
 
       #calling recursively
-      print_str("jump top")
       addiu $sp,$sp,-4 #move stack pointer
       sw input_iter,0($sp) #save input_iter
       addu input_iter,input_iter,width
@@ -439,7 +428,6 @@ check_bottom:
       beq tmp,tmp2,black_pixel_found_returning
 
       #calling recursively
-      print_str("jump bottom")
       addiu $sp,$sp,-4 #move stack pointer
       sw input_iter,0($sp) #save input_iter
       subu input_iter,input_iter,width
@@ -618,8 +606,7 @@ go_to_next_figure:
       addiu tmp4,tmp4,8
 
       addu input_pointer,tmp4,input_pointer
-      print_str_rej("\ninput_pointer: ",input_pointer)
-
+     
       j find_the_smallest_fig
 
 
