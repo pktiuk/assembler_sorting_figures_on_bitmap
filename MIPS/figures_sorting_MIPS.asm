@@ -83,6 +83,7 @@
       li   $v0,   13 #open file
       syscall
       move    file_descriptor,    $v0
+      blt     $v0,$zero,opening_error
       .end_macro
 
 .macro multiply_u(%a,%b,%c) # in %c is saved result
@@ -98,7 +99,6 @@ main:
       li    $v0, 9 #alloc memory
       syscall
       move squares ,$v0
-      ##TODO checking opening file
 
 open_file:
       la   $a0,   input_file_name
@@ -107,6 +107,12 @@ open_file:
       li   $v0,   13 #open file
       syscall
       move    file_descriptor,    $v0
+      bge     $v0,$zero,load_data_from_header
+
+opening_error:
+      print_str("\nFailed opening file\n")
+	j exit
+
 load_data_from_header:      
       #read BM:
       move   $a0,   file_descriptor
@@ -333,8 +339,6 @@ check_max_y:
       
 
 checking_neighbours:
-      ###TODO
-      #checking if neighbours are black, if yes calling black_pixel_found for them
 
 check_left:
 print_str("cL")
