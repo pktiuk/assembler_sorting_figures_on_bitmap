@@ -1,7 +1,7 @@
 
 .data
         header:		.space 128 #firstly used to load data from original header, later for storing copy of this header
-        input_file_name:	.asciiz "./3fig.bmp"
+        input_file_name:	.asciiz "./in.bmp"
         output_file_name:	.asciiz "./out.bmp"
 #        squares: .space 60 #5squares*12 instead it will be allocated
 
