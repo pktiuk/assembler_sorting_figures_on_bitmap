@@ -2,7 +2,7 @@
 #define F_HPP_
 
 extern "C"{
-    void f(unsigned char *pbuffer,unsigned int x,unsigned int y);
+    void f(char *pbuffer,unsigned int x,unsigned int y);
 }
 
 
