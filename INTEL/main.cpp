@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
     input_image.open("in.bmp");
     input_image.read(header_buffer,HEADER_BUFF_SIZE);
 
+
+//READ VALUES
     uint32_t size=read4ByteBuff(header_buffer+2);
     cout<<"Size: "<< size <<endl;
     uint32_t offset=read4ByteBuff(header_buffer+OFFSET_LOC);
@@ -38,10 +40,25 @@ int main(int argc, char *argv[])
     cout<<"X: "<< X<<endl;
     Y=read4ByteBuff(header_buffer+Y_LOC);
     cout<<"Y: "<< Y<<endl;
-
+//READ PIXEL ARRAY
     g_pBuffer = new char [size-offset];
     input_image.read(g_pBuffer,offset-HEADER_BUFF_SIZE);
     input_image.read(g_pBuffer,size-offset);
+//use function
+    f(g_pBuffer,X,Y);
+
+//Load header for new file
+    input_image.close();
+    input_image.open("in.bmp");
+    char *header=new char [offset];
+    input_image.read(header,offset);
+    input_image.close();
+//Save output file
+    ofstream output_image;
+    output_image.open("out.bmp");
+    output_image.write(header,offset);
+    output_image.write(g_pBuffer,size-offset);
+    output_image.close();
 
     return 0;
 }
