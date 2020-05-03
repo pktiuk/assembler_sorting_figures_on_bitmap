@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <GL/glut.h> 
 #include "f.hpp"
 
 #define HEADER_BUFF_SIZE 26
@@ -12,12 +11,7 @@ char *g_pBuffer=nullptr;
 uint32_t X,Y;
 char header_buffer[HEADER_BUFF_SIZE];
 
-void displayCallback()
-{
-    //f(g_pBuffer,X,Y);
-    glDrawPixels(Y,X,GL_RGBA,GL_UNSIGNED_BYTE,g_pBuffer);
-    glutSwapBuffers();
-}
+
 
 constexpr uint32_t read4ByteBuff(char buffer[4])
 {
@@ -48,14 +42,6 @@ int main(int argc, char *argv[])
     g_pBuffer = new char [size-offset];
     input_image.read(g_pBuffer,offset-HEADER_BUFF_SIZE);
     input_image.read(g_pBuffer,size-offset);
-
-    //glutInit(&argc,argv);
-    //glutInitDisplayMode(GLUT_SINGLE);
-    //glutInitWindowPosition(100,100);
-    //glutCreateWindow("Window");
-    //glutDisplayFunc(displayCallback);
-    //glutMainLoop();
-
 
     return 0;
 }
