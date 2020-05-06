@@ -10,7 +10,7 @@
 #define Y_LOC 22
 
 char *g_pBuffer = nullptr;
-char *t_pBuffer =nullptr;
+char *t_pBuffer = nullptr;
 uint32_t X, Y;
 char header_buffer[HEADER_BUFF_SIZE];
 
@@ -25,15 +25,8 @@ constexpr uint32_t read4ByteBuff(char buffer[4])
     return r;
 }
 
-void describe_square(char *pointer)
+void renderInLocation(float x, float y, char *pixbuff)
 {
-    cout << " pole: " << int((*pointer)) << " xmin: " << int((*(pointer + 1))) << " xmax: " << int((*(pointer + 2)));
-    cout << " ymin: " << int(*(pointer + 3)) << " ymax: " << int(*(pointer + 4));
-}
-
-
-
-void renderInLocation(float x, float y,char* pixbuff) {
     int viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
     glMatrixMode(GL_PROJECTION);
@@ -43,22 +36,20 @@ void renderInLocation(float x, float y,char* pixbuff) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glRasterPos2f(x, viewport[3] - y);
-    glDrawPixels(X,Y,GL_RGBA,GL_UNSIGNED_BYTE,pixbuff);
+    glDrawPixels(X, Y, GL_RGBA, GL_UNSIGNED_BYTE, pixbuff);
 
-    glMatrixMode( GL_PROJECTION );
+    glMatrixMode(GL_PROJECTION);
     glPopMatrix();
-    glMatrixMode( GL_MODELVIEW );   
+    glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
 }
 
 void displayCb()
 {
-    //glDrawPixels(X,Y,GL_RGBA,GL_UNSIGNED_BYTE,g_pBuffer);
-    renderInLocation(X,Y,g_pBuffer);
-    renderInLocation(0,Y,t_pBuffer);
+    renderInLocation(X, Y, g_pBuffer);
+    renderInLocation(0, Y, t_pBuffer);
     glutSwapBuffers();
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -91,23 +82,6 @@ int main(int argc, char *argv[])
     //use function
     f(t_pBuffer, g_pBuffer, X, Y);
 
-    //print output
-    cout << "\nFig 0 ";
-    describe_square(t_pBuffer);
-    cout << endl;
-    cout << "\nFig 1 ";
-    describe_square(t_pBuffer + 5);
-    cout << endl;
-    cout << "\nFig 2 ";
-    describe_square(t_pBuffer + 10);
-    cout << endl;
-    cout << "\nFig 3 ";
-    describe_square(t_pBuffer + 15);
-    cout << endl;
-    cout << "\nFig 4 ";
-    describe_square(t_pBuffer + 20);
-    cout << endl;
-
     //Load header for new file
     input_image.close();
     input_image.open(filename);
@@ -122,11 +96,11 @@ int main(int argc, char *argv[])
     output_image.write(g_pBuffer, size - offset);
     output_image.close();
 
-    cout << "\nImage saved\n";
+    cout << "Image saved to out.bmp\n";
 
-    glutInit(&argc,argv);
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE);
-    glutInitWindowSize(X*2,Y);
+    glutInitWindowSize(X * 2, Y);
     glutCreateWindow("Sorted and unsorted figures");
     glutDisplayFunc(displayCb);
     glutMainLoop();
