@@ -11,6 +11,7 @@ char *g_pBuffer=nullptr;
 uint32_t X,Y;
 char header_buffer[HEADER_BUFF_SIZE];
 
+using namespace std;
 
 
 constexpr uint32_t read4ByteBuff(char buffer[4])
@@ -22,12 +23,22 @@ constexpr uint32_t read4ByteBuff(char buffer[4])
     return r;
 }
 
-using namespace std;
+void describe_square(char *pointer)
+{
+    cout<<" pole: "<<int((*pointer))<<" xmin: "<<int((*(pointer+1)))<< " xmax: "<<int((*(pointer+2)));
+    cout<<" ymin: "<<int(*(pointer+3))<< " ymax: "<<int(*(pointer+4));
+}
 
 int main(int argc, char *argv[])
 {
     std::ifstream input_image;
-    input_image.open("in.bmp");
+    if(argc>1)
+    {
+        input_image.open(argv[1]);
+    }
+    else
+        input_image.open("in.bmp");
+
     input_image.read(header_buffer,HEADER_BUFF_SIZE);
 
 
@@ -42,10 +53,30 @@ int main(int argc, char *argv[])
     cout<<"Y: "<< Y<<endl;
 //READ PIXEL ARRAY
     g_pBuffer = new char [size-offset];
+    char * t_pBuffer = new char [size-offset];
     input_image.read(g_pBuffer,offset-HEADER_BUFF_SIZE);
     input_image.read(g_pBuffer,size-offset);
+    for (unsigned int i=0;i<size-offset;i++)
+        t_pBuffer[i]=g_pBuffer[i];
 //use function
-    f(g_pBuffer,X,Y);
+    f(t_pBuffer,g_pBuffer,X,Y);
+
+//print output
+    cout<<"\nFig 0 ";
+    describe_square(t_pBuffer);
+    cout<<endl;
+    cout<<"\nFig 1 ";
+    describe_square(t_pBuffer+5);
+    cout<<endl;
+    cout<<"\nFig 2 ";
+    describe_square(t_pBuffer+10);
+    cout<<endl;
+    cout<<"\nFig 3 ";
+    describe_square(t_pBuffer+15);
+    cout<<endl;
+    cout<<"\nFig 4 ";
+    describe_square(t_pBuffer+20);
+    cout<<endl;
 
 //Load header for new file
     input_image.close();
@@ -60,5 +91,6 @@ int main(int argc, char *argv[])
     output_image.write(g_pBuffer,size-offset);
     output_image.close();
 
+    cout<<"\nImage saved\n";
     return 0;
 }
