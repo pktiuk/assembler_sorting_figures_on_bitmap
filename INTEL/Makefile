@@ -1,6 +1,6 @@
 
 CC = g++
-CFLAGS = -Wall -m64
+CFLAGS = -Wall -m64 -g
 
 all: main.o
 	$(CC) $(CFLAGS) -o fun main.o f.o 
