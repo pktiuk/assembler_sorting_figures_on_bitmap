@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include "f.hpp"
 
 #define HEADER_BUFF_SIZE 26
@@ -26,6 +28,15 @@ void describe_square(char *pointer)
 {
     cout << " pole: " << int((*pointer)) << " xmin: " << int((*(pointer + 1))) << " xmax: " << int((*(pointer + 2)));
     cout << " ymin: " << int(*(pointer + 3)) << " ymax: " << int(*(pointer + 4));
+}
+
+
+
+void displayCb()
+{
+    glDrawPixels(X,Y,GL_RGBA,GL_UNSIGNED_BYTE,g_pBuffer);
+    
+    glutSwapBuffers();
 }
 
 int main(int argc, char *argv[])
@@ -90,5 +101,13 @@ int main(int argc, char *argv[])
     output_image.close();
 
     cout << "\nImage saved\n";
+
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_SINGLE);
+    glutInitWindowSize(X*2,Y);
+    glutCreateWindow("Sorted and unsorted figures");
+    glutDisplayFunc(displayCb);
+    glutMainLoop();
+
     return 0;
 }
