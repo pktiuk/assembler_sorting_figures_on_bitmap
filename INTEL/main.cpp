@@ -8,6 +8,7 @@
 #define OFFSET_LOC 10
 #define X_LOC 18
 #define Y_LOC 22
+#define BORDER_WIDTH 4
 
 char *g_pBuffer = nullptr;
 char *t_pBuffer = nullptr;
@@ -46,7 +47,7 @@ void renderInLocation(float x, float y, char *pixbuff)
 
 void displayCb()
 {
-    renderInLocation(X, Y, g_pBuffer);
+    renderInLocation(X + BORDER_WIDTH, Y, g_pBuffer);
     renderInLocation(0, Y, t_pBuffer);
     glutSwapBuffers();
 }
@@ -100,7 +101,7 @@ int main(int argc, char *argv[])
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE);
-    glutInitWindowSize(X * 2, Y);
+    glutInitWindowSize(X * 2 + BORDER_WIDTH, Y);
     glutCreateWindow("Sorted and unsorted figures");
     glutDisplayFunc(displayCb);
     glutMainLoop();
