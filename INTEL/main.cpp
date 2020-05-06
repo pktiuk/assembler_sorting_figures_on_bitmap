@@ -10,6 +10,7 @@
 #define Y_LOC 22
 
 char *g_pBuffer = nullptr;
+char *t_pBuffer =nullptr;
 uint32_t X, Y;
 char header_buffer[HEADER_BUFF_SIZE];
 
@@ -32,12 +33,32 @@ void describe_square(char *pointer)
 
 
 
+void renderInLocation(float x, float y,char* pixbuff) {
+    int viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(viewport[0], viewport[2], viewport[1], viewport[3], -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRasterPos2f(x, viewport[3] - y);
+    glDrawPixels(X,Y,GL_RGBA,GL_UNSIGNED_BYTE,pixbuff);
+
+    glMatrixMode( GL_PROJECTION );
+    glPopMatrix();
+    glMatrixMode( GL_MODELVIEW );   
+    glPopMatrix();
+}
+
 void displayCb()
 {
-    glDrawPixels(X,Y,GL_RGBA,GL_UNSIGNED_BYTE,g_pBuffer);
-    
+    //glDrawPixels(X,Y,GL_RGBA,GL_UNSIGNED_BYTE,g_pBuffer);
+    renderInLocation(X,Y,g_pBuffer);
+    renderInLocation(0,Y,t_pBuffer);
     glutSwapBuffers();
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -62,7 +83,7 @@ int main(int argc, char *argv[])
     cout << "Y: " << Y << endl;
     //READ PIXEL ARRAY
     g_pBuffer = new char[size - offset];
-    char *t_pBuffer = new char[size - offset];
+    t_pBuffer = new char[size - offset];
     input_image.read(g_pBuffer, offset - HEADER_BUFF_SIZE);
     input_image.read(g_pBuffer, size - offset);
     for (unsigned int i = 0; i < size - offset; i++)
@@ -92,6 +113,7 @@ int main(int argc, char *argv[])
     input_image.open(filename);
     char *header = new char[offset];
     input_image.read(header, offset);
+    input_image.read(t_pBuffer, size - offset);
     input_image.close();
     //Save output file
     ofstream output_image;
