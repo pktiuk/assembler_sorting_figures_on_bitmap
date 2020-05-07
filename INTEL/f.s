@@ -5,8 +5,8 @@ global f
 
 
 ;Strictly defined
-;R8, R9,R15 -used as tmp buffers
-;R10-tmp_buffer
+;R8, R9,R15 -used as tmp registers
+;R10-tmp_buffer (pointer to buffer used for copying figures and saving debug info)
 ;R11-pbuffer
 ;R12-x (width)
 ;R13-y (height of pic)
