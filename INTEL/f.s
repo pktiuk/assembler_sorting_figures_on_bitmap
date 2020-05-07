@@ -60,7 +60,7 @@ main_y_loop_body:
   mov r15, rax
   mov rax, r15
   movzx eax, BYTE [rax]
-  test al, al
+  cmp al, 0
   jne main_search_loop_increase_x_iter
   mov rax, QWORD [rbp-8]
   mov DWORD [rax], 0
@@ -372,7 +372,7 @@ increase_iter_for_y:
 
   mov rax, QWORD [rbp-8] 
   movzx eax, BYTE [rax]
-  test al, al
+  cmp al, 0
   jne leave_check_function
 
 ;copy pixel to tmp_buffer
