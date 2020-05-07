@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <GL/glut.h>
-#include <GL/freeglut.h>
 #include "f.hpp"
 
 #define HEADER_BUFF_SIZE 26
@@ -62,6 +61,12 @@ int main(int argc, char *argv[])
     }
     input_image.open(filename);
 
+    if(!input_image.is_open())
+    {
+        cout<<"Image called: '"<< filename<<"' can't be opened\n";
+        return -1;
+    }
+
     input_image.read(header_buffer, HEADER_BUFF_SIZE);
 
     //READ VALUES
@@ -73,6 +78,7 @@ int main(int argc, char *argv[])
     cout << "X: " << X << endl;
     Y = read4ByteBuff(header_buffer + Y_LOC);
     cout << "Y: " << Y << endl;
+
     //READ PIXEL ARRAY
     g_pBuffer = new char[size - offset];
     t_pBuffer = new char[size - offset];
@@ -80,6 +86,7 @@ int main(int argc, char *argv[])
     input_image.read(g_pBuffer, size - offset);
     for (unsigned int i = 0; i < size - offset; i++)
         t_pBuffer[i] = g_pBuffer[i];
+
     //use function
     f(t_pBuffer, g_pBuffer, X, Y);
 
@@ -99,6 +106,7 @@ int main(int argc, char *argv[])
 
     cout << "Image saved to out.bmp\n";
 
+    //Visualize input and output images in window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE);
     glutInitWindowSize(X * 2 + BORDER_WIDTH, Y);
