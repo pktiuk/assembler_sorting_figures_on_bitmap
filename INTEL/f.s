@@ -76,7 +76,7 @@ main_y_loop_body:
   mov rax, R15
   mov rcx, r8
   mov rdi, rax
-  call  check ; call checking function
+  call check ; call checking function
   add QWORD [rbp-8], 20;change value of curr square pointer (now it points to next square)
 main_search_loop_increase_x_iter:
   add DWORD [rbp-16], 1
@@ -449,7 +449,7 @@ check_left:
   mov eax, DWORD [rbp-16]
   mov rcx, r8
   mov edx, eax
-  call  check ; call checking function
+  call check ; call checking function
 check_right:
   mov eax, DWORD [rbp-12]
   sub eax, 1
@@ -463,7 +463,7 @@ check_right:
   mov eax, DWORD [rbp-16]
   mov rcx, r8
   mov edx, eax
-  call  check ; call checking function
+  call check ; call checking function
 check_up:
   cmp DWORD [rbp-16], 0
   je check_down
@@ -481,7 +481,7 @@ check_up:
   mov rcx, r8
   mov edx, esi
   mov esi, eax
-  call  check ; call checking function
+  call check ; call checking function
 check_down:
   mov eax, DWORD [rbp-16]
   add eax, 1
@@ -499,7 +499,7 @@ check_down:
   mov rcx, r8
   mov edx, esi
   mov esi, eax
-  call  check ; call checking function
+  call check ; call checking function
 leave_check_function:
   nop
   leave
