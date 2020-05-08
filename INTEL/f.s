@@ -39,14 +39,8 @@ f: ;(char*, char*, unsigned int, unsigned int):
      
   mov DWORD [rbp-12], 0;y_iter for this loop set it's value to 0
 main_search_loop_y_init:
-  mov eax, DWORD [rbp-12]
-  cmp eax, R13D
-  jnb rewriting_squares_to_tmp_buff
   mov DWORD [rbp-16], 0 ;x_iter for this loop
 main_y_loop_body:
-  mov eax, DWORD [rbp-16]
-  cmp eax, R12D
-  jnb main_search_loop_increase_y_iter
   mov eax, DWORD [rbp-16]
   sal eax, 2
   mov edx, eax
@@ -86,10 +80,14 @@ main_y_loop_body:
   add QWORD [rbp-8], 20;change value of curr square pointer (now it points to next square)
 main_search_loop_increase_x_iter:
   add DWORD [rbp-16], 1
-  jmp main_y_loop_body
+  mov eax, DWORD [rbp-16]
+  cmp eax, R12D
+  jb main_y_loop_body
 main_search_loop_increase_y_iter:
   add DWORD [rbp-12], 1
-  jmp main_search_loop_y_init
+  mov eax, DWORD [rbp-12]
+  cmp eax, R13D
+  jb main_search_loop_y_init
 
 rewriting_squares_to_tmp_buff: ;just rewriting values of squares to buffer(used for debugging)
     mov eax, DWORD [rbp-128]
