@@ -296,14 +296,10 @@ rewriting_square_y_loop:
     add rax, 4
     mov edx, DWORD [rax]; edx contains min X for this figure
     mov r8d,edx; now R8 will contain current X for this figure
-    check_rewriting_x_loop: ;check if we should leave loop
-    mov rax, QWORD [rbp-8]
-    add rax, 8
-    mov eax, DWORD [rax];eax contains max X value for this figure
-    cmp r8d, eax ;if r8d>eax then leave loop
-    ja increase_iter_for_y
+    
 
     ;loop_drawing_line body
+    rewriting_x_loop:
       mov rax, QWORD [rbp-8]
       add rax, 12
       mov eax, DWORD [rax] ;load current y min
@@ -331,7 +327,13 @@ rewriting_square_y_loop:
 
     ;loop_drawing_line end
     add r8d,1
-    jmp check_rewriting_x_loop
+    
+    check_rewriting_x_loop: ;check if we should leave loop
+    mov rax, QWORD [rbp-8]
+    add rax, 8
+    mov eax, DWORD [rax];eax contains max X value for this figure
+    cmp r8d, eax ;if r8d>eax then leave loop
+    jna rewriting_x_loop
 
 increase_iter_for_y:
   mov rax, QWORD [rbp-8]
