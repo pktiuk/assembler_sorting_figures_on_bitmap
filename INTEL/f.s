@@ -282,15 +282,6 @@ rewriting_squares_to_tmp_buff: ;just rewriting values of squares to buffer(used 
   mov r15d,DWORD [rax] ;now r15b will contain ymin
 
 rewriting_square_y_loop:
-  mov rax, QWORD [rbp-8]
-  add rax, 12
-  mov edx, DWORD [rax];load y min
-  mov rax, QWORD [rbp-8]
-  add rax, 16
-  mov eax, DWORD [rax]
-  cmp edx, eax ;load y max
-  ja end_of_rewriting_square_loop
-
  ;loop_drawing_line init
     mov rax, QWORD [rbp-8]
     add rax, 4
@@ -341,7 +332,16 @@ increase_iter_for_y:
   mov edx, DWORD [rax]; load y min
   add edx, 1
   mov DWORD [rax], edx;increase value of y min (I use it as an iterator)
-  jmp rewriting_square_y_loop
+  
+  mov rax, QWORD [rbp-8]
+  add rax, 12
+  mov edx, DWORD [rax];load y min
+  mov rax, QWORD [rbp-8]
+  add rax, 16
+  mov eax, DWORD [rax]
+  cmp edx, eax ;load y max
+  jna rewriting_square_y_loop
+
 ;leave figure loop
   end_of_rewriting_square_loop:
 
