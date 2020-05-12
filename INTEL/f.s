@@ -59,13 +59,13 @@ main_y_loop_body:
     mov DWORD [rax], 0
     mov rax, QWORD [rbp-8]
     add rax, 4
-    mov DWORD [rax], 16777215
+    mov DWORD [rax], R12D
     mov rax, QWORD [rbp-8]
     add rax, 8
     mov DWORD [rax], 0
     mov rax, QWORD [rbp-8]
     add rax, 12
-    mov DWORD [rax], 16777215
+    mov DWORD [rax], R13D
     mov rax, QWORD [rbp-8]
     add rax, 16
     mov DWORD [rax], 0
